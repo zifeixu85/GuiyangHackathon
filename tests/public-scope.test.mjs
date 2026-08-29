@@ -65,3 +65,13 @@ test("health endpoint declares public showcase mock mode", async () => {
   assert.match(source, /mock:\s*true/);
   assert.doesNotMatch(source, /process\.env|fetch\(|cookies\(|headers\(/);
 });
+
+test("README documents the required stack and deployed instance", async () => {
+  const readme = await readFile(path.join(root, "README.md"), "utf8");
+  assert.match(readme, /## 在线访问（已部署实例）/);
+  assert.match(readme, /https:\/\/qianke\.ameng\.studio\/experience/);
+  assert.match(readme, /## 技术栈与选型/);
+  for (const required of ["Next.js App Router", "React", "TypeScript", "原生 CSS"]) {
+    assert.match(readme, new RegExp(required.replace(".", "\\.")));
+  }
+});
